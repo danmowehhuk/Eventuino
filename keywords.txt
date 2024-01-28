@@ -1,0 +1,27 @@
+#######################################
+
+# Syntax Coloring Map For Eventuino
+
+#######################################
+
+# Class (KEYWORD1)
+
+#######################################
+
+
+
+Eventuino               KEYWORD1
+EventSource             KEYWORD1
+Button                  KEYWORD1
+Toggle                  KEYWORD1
+
+
+#######################################
+
+# Methods and Functions (KEYWORD2)
+
+#######################################
+
+
+begin  KEYWORD2
+poll   KEYWORD2
