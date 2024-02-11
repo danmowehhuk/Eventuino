@@ -53,6 +53,13 @@ namespace eventuino {
       DigitalPinSource(uint8_t pinNumber, uint8_t value, 
           pinSetupCallback_t setupCallback, digitalReadCallback_t readCallback);
 
+      // Standard implementation for all digital pins.
+      void setup() {
+        _doPinSetup(_pinNumber);
+      }
+
+      void poll();
+
       /*
        * Call the onLongHold method repeatedly after an initial delay.
        * This is disabled by default.
@@ -103,13 +110,6 @@ namespace eventuino {
 
       // bits: 000 | enableRepeat | isActive | isLongHold | currState | prevState
       uint8_t _state = 0b00000011;
-
-      // Standard implementation for all digital pins.
-      void setup() {
-        _doPinSetup(_pinNumber);
-      }
-
-      void poll();
 
       bool isRepeatEnabled();
       uint8_t currState();
