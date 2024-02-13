@@ -111,6 +111,7 @@ The event sources provided with Eventuino have the following callbacks:
 
 | Event Source | Callback | Event Trigger |
 | ------------ | -------- | ------- |
+| [DigitalPinSource](src/eventuino/DigitalPinSource.h) | onChangeState | When the pin switches from HIGH to LOW or vice versa |
 | [Button](src/eventuino/Button.h) | onPressed | When the button switches from unpressed to pressed |
 | [Button](src/eventuino/Button.h) | onReleased | When the button switches from pressed to unpressed |
 | [Button](src/eventuino/Button.h) | onLongPressed | When the button has remained pressed for more than some delay. May optionally repeat (disabled by default, see `enableRepeat`) |

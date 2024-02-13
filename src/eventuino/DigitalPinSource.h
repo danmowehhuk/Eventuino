@@ -61,6 +61,11 @@ namespace eventuino {
       void poll();
 
       /*
+       * Default callback used by onChange if not overriden by a subclass
+       */
+      eventuinoCallback_t onChangeState = 0;
+
+      /*
        * Call the onLongHold method repeatedly after an initial delay.
        * This is disabled by default.
        */ 
@@ -88,8 +93,13 @@ namespace eventuino {
       // Returns true if the pin has been LOW for more than some delay
       bool isLongHold(); 
 
-      // Called when the pin state changes (debounced)
-      virtual void onChange(uint8_t value) = 0;
+      // Called when the pin state changes (debounced). Default implementation
+      // calls DigitalPinSource.onChangeState.
+      virtual void onChange(uint8_t value) {
+        if (onChangeState != 0) {
+          onChangeState(value);
+        }
+      };
 
       // Called when the pin has been active for more than some delay, and
       // possibly repeated if repeat is enabled
