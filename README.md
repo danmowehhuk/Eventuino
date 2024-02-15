@@ -122,8 +122,7 @@ The event sources provided with Eventuino have the following callbacks:
 ### Debounce, Long Hold and Repeat delays
 
 Eventuino has default delays for debouncing (75ms), long holds (1s) and repeats (200ms), but these can be changed.
-Note, however, that these changes apply to all the event sources. The `DigitalPinSource` class provides
-the following static methods:
+Note, however, that these changes apply to all the event sources. The `DigitalPinSource` class is the base class for all digital event sources, and provides the following static methods:
 - `DigitalPinSource::setDebounceDelayMs(uint8_t)`
 - `DigitalPinSource::setLongHoldDelayMs(uint16_t)`
 - `DigitalPinSource::setRepeatMs(uint8_t)`
@@ -152,8 +151,8 @@ Say you have a thing that connects to a digital pin as an input. You could poll 
 from the `loop()` function, but if you want to take the event handler approach, you
 can create your own Eventuino event source!
 
-Just extend the `eventuino/DigitalPinSource` class! Your class must implement its 
-own `onChange(uint8_t)` method, and may optionally implement `onLongHold(uint8_t)`
+Just extend the `eventuino/DigitalPinSource` class! Your class would override the 
+`onChange(uint8_t)` method, and may optionally override `onLongHold(uint8_t)`
 if needed. You can define your own callback function fields with names that make
 sense for your hardware; e.g. `onLight`, `onDark`, `onHot`, `onCold`...
 
