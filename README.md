@@ -118,6 +118,7 @@ The event sources provided with Eventuino have the following callbacks:
 | [Toggle](src/eventuino/Toggle.h) | onFlip | When the switch changes state in either direction |
 | [Toggle](src/eventuino/Toggle.h) | onActivate | When the switch changes to the activated state |
 | [Toggle](src/eventuino/Toggle.h) | onDeactivate | When the switch changes to the deactivated state |
+| [Timer](src/eventuino/Timer.h) | onExpire | When *at least* `duration`ms have passed |
 
 ### Debounce, Long Hold and Repeat delays
 
