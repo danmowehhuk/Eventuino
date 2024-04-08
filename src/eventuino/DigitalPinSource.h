@@ -7,11 +7,11 @@
   digital pin to ground would also work (a sensor connected to a transistor
   perhaps).
 
-  This class takes care of all debouncing, so subclasses can implement the
+  This class takes care of all debouncing, so subclasses can override the
   onChange(uint8_t) and onLongHold(uint8_t) without worrying about noise
   or needing to deal with timers.
 
-  Subclasses MUST implement the onChange(uint8_t) method. 
+  onChange(uint8_t) calls the onChangeState callback by default.
   The onLongHold(uint8_t) method provides an empty default implementation.
 
   NOTE: The "active" state means the pin is reading LOW
