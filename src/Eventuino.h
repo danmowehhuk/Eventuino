@@ -23,10 +23,13 @@ namespace eventuino {
   class Eventuino {
 
     private:
+      Eventuino(Eventuino &t); // disable copy constructor
       EventSource* *_eventSources;
       uint8_t _eventSourceCount;
 
     public:
+      Eventuino() {};
+
       void setEventSources(EventSource* *eventSources, uint8_t eventSourceCount);
     
       /*
