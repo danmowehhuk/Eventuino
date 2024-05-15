@@ -4,8 +4,8 @@
 void Timer::poll() {
   if (!_isActive) return;
   if (millis() - _startTime >= _duration && onExpire != 0) {
-    onExpire(_value);
     cancel();
+    onExpire(_value);
   }
 }
 
