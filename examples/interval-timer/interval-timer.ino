@@ -5,13 +5,13 @@ using namespace eventuino;
 
 #define TIMER_VALUE 1
 
-Timer14Bit timer(TIMER_VALUE); 
+IntervalTimer14Bit timer(TIMER_VALUE); 
 Eventuino evt;
 EventSource* eventSources[] = { &timer };
 
 void timerExpired(uint8_t value) {
-  Serial.print("Timer expired with value=");
-  Serial.println(value);
+  Serial.print("Timer expired at: ");
+  Serial.println(millis());
 }
 
 void setup() {
