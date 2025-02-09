@@ -64,10 +64,10 @@ class Button: public DigitalPinSource {
     Button(Button &t);
 
     // required by DigitalPinSource
-    void onChange(uint8_t value);
+    void onChange(uint8_t value, void* state = nullptr) override;
 
     // overriding default from DigitalPingSource
-    void onLongHold(uint8_t value);
+    void onLongHold(uint8_t value, void* state = nullptr) override;
 
 };
 

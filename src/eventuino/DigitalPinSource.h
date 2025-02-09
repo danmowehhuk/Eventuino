@@ -54,11 +54,11 @@ namespace eventuino {
           pinSetupCallback_t setupCallback, digitalReadCallback_t readCallback);
 
       // Standard implementation for all digital pins.
-      void setup() {
+      void setup() override {
         _doPinSetup(_pinNumber);
       }
 
-      void poll();
+      void poll(void* state = nullptr) override;
 
       /*
        * Default callback used by onChange if not overriden by a subclass
@@ -95,15 +95,15 @@ namespace eventuino {
 
       // Called when the pin state changes (debounced). Default implementation
       // calls DigitalPinSource.onChangeState.
-      virtual void onChange(uint8_t value) {
+      virtual void onChange(uint8_t value, void* state = nullptr) {
         if (onChangeState != 0) {
-          onChangeState(value);
+          onChangeState(value, state);
         }
       };
 
       // Called when the pin has been active for more than some delay, and
       // possibly repeated if repeat is enabled
-      virtual void onLongHold(uint8_t value) {};
+      virtual void onLongHold(uint8_t value, void* state = nullptr) {};
 
     private:
       DigitalPinSource(); // disable default constructor

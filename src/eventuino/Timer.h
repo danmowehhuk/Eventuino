@@ -51,10 +51,10 @@ template<class U, class T, uint8_t S> class Timer: public EventSource {
     Timer(uint8_t value): _value(value) {};
 
     // no pins to set up
-    void setup() {};
+    void setup() override {};
 
     // required by EventSource
-    void poll() {
+    void poll(void* state = nullptr) override {
       if (!isActive()) return;
       if (onExpire == 0) {
         cancel();
@@ -62,7 +62,7 @@ template<class U, class T, uint8_t S> class Timer: public EventSource {
       }
       if (isExpired()) {
         reset();
-        onExpire(_value);
+        onExpire(_value, state);
       }
     };
 

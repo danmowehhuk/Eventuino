@@ -2,14 +2,14 @@
 
 using namespace eventuino;
 
-void Toggle::onChange(uint8_t value) {
+void Toggle::onChange(uint8_t value, void* state = nullptr) {
   if (isActive() && onActivate != 0) {
-    onActivate(value);
+    onActivate(value, state);
   } else if (!isActive() && onDeactivate != 0) {
-    onDeactivate(value);
+    onDeactivate(value, state);
   }
   if (onFlip != 0) {
-    onFlip(value);
+    onFlip(value, state);
   }
 }
 

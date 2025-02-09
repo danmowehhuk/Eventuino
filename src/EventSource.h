@@ -27,9 +27,12 @@ namespace eventuino {
 
       /*
        * Check the state of the event source. If any events have been
-       * triggered, invoke the relevant callback function.
+       * triggered, invoke the relevant callback function. The optional 
+       * state argument optionally enables a state object to be passed 
+       * to handler functions that would not otherwise have access to 
+       * state outside their scope.
        */
-      virtual void poll() = 0;
+      virtual void poll(void* state = nullptr) = 0;
 
       /*
        * Event callback functions must use this signature, where the
@@ -37,7 +40,7 @@ namespace eventuino {
        * (Button, Toggle, etc) and may be used to identify which 
        * button, toggle, etc., triggered the event.
        */
-      typedef void (*eventuinoCallback_t)(uint8_t value);
+      typedef void (*eventuinoCallback_t)(uint8_t value, void* state = nullptr);
 
   };
 

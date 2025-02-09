@@ -27,7 +27,7 @@ DigitalPinSource::DigitalPinSource(uint8_t pinNumber, uint8_t value,
     _doPinSetup(setupCallback),
     _doDigitalRead(readCallback) {};
 
-void DigitalPinSource::poll() {
+void DigitalPinSource::poll(void* state = nullptr) {
   uint16_t now = millis(); // trunc to last 16-bits (32s)
   uint8_t reading = _doDigitalRead(_pinNumber);
 
@@ -57,7 +57,7 @@ void DigitalPinSource::poll() {
         setIsActive(false);
         setIsLongHold(false);
       }
-      onChange(_value);
+      onChange(_value, state);
 
     } else {
       // State is unchanged, check for long hold
@@ -71,7 +71,7 @@ void DigitalPinSource::poll() {
         bool isInitialLongHold = !isLongHold();
         setIsLongHold(true);
         if (isInitialLongHold || isRepeatEnabled()) {
-          onLongHold(_value);
+          onLongHold(_value, state);
           _lastRepeat = now;
         } else {
           // This is repeat pass, and repeat is disabled - do nothing

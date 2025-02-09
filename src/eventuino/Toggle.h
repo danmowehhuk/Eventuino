@@ -61,7 +61,7 @@ class Toggle: public DigitalPinSource {
     Toggle(Toggle &t);
 
     // required by DigitalPinSource
-    void onChange(uint8_t value);
+    void onChange(uint8_t value, void* state = nullptr) override;
 
     // onLongHold is not supported by a Toggle, so enableRepeat is disabled
     void enableRepeat(bool b);

@@ -2,17 +2,17 @@
 
 using namespace eventuino;
 
-void Button::onChange(uint8_t value) {
+void Button::onChange(uint8_t value, void* state = nullptr) {
   if (isActive() && onPressed != 0) {
-    onPressed(value);
+    onPressed(value, state);
   } else if (!isActive() && onReleased != 0) {
-    onReleased(value);
+    onReleased(value, state);
   }
 }
 
-void Button::onLongHold(uint8_t value) {
+void Button::onLongHold(uint8_t value, void* state = nullptr) {
   if (onLongPress != 0) {
-    onLongPress(value);
+    onLongPress(value, state);
   }
 }
 
