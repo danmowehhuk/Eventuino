@@ -53,6 +53,10 @@ namespace eventuino {
       DigitalPinSource(uint8_t pinNumber, uint8_t value, 
           pinSetupCallback_t setupCallback, digitalReadCallback_t readCallback);
 
+      uint8_t getValue() {
+        return _value;
+      }
+
       // Standard implementation for all digital pins.
       void setup() override {
         _doPinSetup(_pinNumber);
