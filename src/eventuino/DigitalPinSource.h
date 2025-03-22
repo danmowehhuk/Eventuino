@@ -89,6 +89,13 @@ namespace eventuino {
         _repeatMs = repeat;
       }
 
+      // Allow moving
+      DigitalPinSource(DigitalPinSource&& other) noexcept;
+      DigitalPinSource& operator=(DigitalPinSource&& other) noexcept;
+      // Disable copying
+      DigitalPinSource(const DigitalPinSource&) = delete;
+      DigitalPinSource& operator=(const DigitalPinSource&) = delete;
+
 
     protected:
       // Returns true when the pin is LOW
@@ -110,10 +117,7 @@ namespace eventuino {
       virtual void onLongHold(uint8_t value, void* state = nullptr) {};
 
     private:
-      DigitalPinSource(); // disable default constructor
-
-      // Disable copy constructor since it would refer to the same pin
-      DigitalPinSource(DigitalPinSource &t);
+      DigitalPinSource() = delete;
 
       uint8_t _pinNumber;
       uint8_t _value;

@@ -122,4 +122,35 @@ void DigitalPinSource::setPrevState(uint8_t s) {
   bitWrite(_state, 0, s);
 }
 
+DigitalPinSource::DigitalPinSource(DigitalPinSource&& other) noexcept {
+  onChangeState = other.onChangeState;
+  _pinNumber = other._pinNumber;
+  _value = other._value;
+  _doDigitalRead = other._doDigitalRead;
+  _doPinSetup = other._doPinSetup;
+  _toggleTime = other._toggleTime;
+  _lastRepeat = other._lastRepeat;
+  _state = other._state;
+  other.onChangeState = 0;
+  other._doDigitalRead = 0;
+  other._doPinSetup = 0;
+}
+
+DigitalPinSource& DigitalPinSource::operator=(DigitalPinSource&& other) noexcept {
+  if (this != &other) {
+    onChangeState = other.onChangeState;
+    _pinNumber = other._pinNumber;
+    _value = other._value;
+    _doDigitalRead = other._doDigitalRead;
+    _doPinSetup = other._doPinSetup;
+    _toggleTime = other._toggleTime;
+    _lastRepeat = other._lastRepeat;
+    _state = other._state;
+    other.onChangeState = 0;
+    other._doDigitalRead = 0;
+    other._doPinSetup = 0;
+  }
+  return *this;
+}
+
 

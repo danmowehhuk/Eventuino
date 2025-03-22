@@ -18,6 +18,7 @@ using namespace eventuino;
 
 __attribute__((deprecated("Use addEventSource(...) instead")))
 void Eventuino::setEventSources(EventSource* *srcs, uint8_t n) {
+  if (_eventSources) delete[] _eventSources;
   _eventSources = srcs;
   _eventSourceCount = n;
 }
@@ -44,6 +45,8 @@ void Eventuino::begin() {
 void Eventuino::poll(void* state = nullptr) {
   for (uint8_t i = 0; i < _eventSourceCount; i++) {
     EventSource* es = _eventSources[i];
-    es->poll(state);
+    if (es) {
+      es->poll(state);
+    }
   }
 }

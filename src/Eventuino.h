@@ -23,9 +23,16 @@ namespace eventuino {
   class Eventuino {
 
     private:
-      Eventuino(Eventuino &t); // disable copy constructor
+      // Disable moving and copying
+      Eventuino(Eventuino&& other) = delete;
+      Eventuino& operator=(Eventuino&& other) = delete;
+      Eventuino(const Eventuino&) = delete;
+      Eventuino& operator=(const Eventuino&) = delete;
+
       EventSource* *_eventSources;
       uint8_t _eventSourceCount;
+
+      friend class EventuinoTestHelper;
 
     public:
       Eventuino() {};
