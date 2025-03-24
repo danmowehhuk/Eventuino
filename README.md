@@ -15,9 +15,10 @@ your behaviors as function callbacks for _events_ such as `onFlip(uint8_t)`,
 `onPressed(uint8_t)`, `onLongPressed(uint8_t)`, `onReleased(uint8_t)`, etc. 
 You can even change the function callbacks on the fly!
 
-Eventuino can also be extended to support your other digital or analog input
-devices; say, a thermocoupler connected to the base of a transistor forming
-a "temperature switch."
+Eventuino provides `Button`, `Toggle`, a generic `DigitalPinSource` and various
+`Timer`s out of the box, but Eventuino can also be extended to support your 
+other digital or analog input devices; say, a thermocoupler connected to the 
+base of a transistor forming a "temperature switch."
 
 Written by Dan Mowehhuk (danmowehhuk@gmail.com)\
 BSD license, check license.txt for more information\
@@ -39,7 +40,6 @@ using namespace eventuino;
 
 Button button(BUTTON_PIN, BUTTON_VALUE); 
 Eventuino evt;
-EventSource* eventSources[] = { &button };
 
 void buttonPressed(uint8_t value) {
   Serial.print("Button pressed with value=");
@@ -52,7 +52,7 @@ void setup() {
 
   button.onPressed=buttonPressed;
 
-  evt.setEventSources(eventSources, 1);
+  evt.addEventSource(&button);
   evt.begin();
 }
 
@@ -72,15 +72,11 @@ First, instantiate your event sources (`Button`s, `Toggle`s, etc.) passing in
 their pin numbers and a value of your choosing. This value will be passed to
 your event callback function. You can use the same callback function for
 multiple event sources, so you could use the `value` to identify which button
-was pressed, for example.
+was pressed, for example. Next, instantiate `Eventuino`.
 
-Next, instantiate `Eventuino` and an `EventSource` array containing references
-to all the event sources you created (note the `&` before each array value).
-
-In your `setup()` function, call `setEventSources` and pass in the event source
-array and the number of elements in it. Then, call Eventuino's `begin()` 
-method. Eventuino will take care of initializing all your pins, so no need to 
-worry about `pinMode`s here.
+In your `setup()` function, call `addEventSource` for each of your event
+sources. Then, call Eventuino's `begin()` method. Eventuino will take care of
+initializing all your pins, so no need to worry about `pinMode`s here.
 
 Lastly, place a call to Eventuino's `poll()` method in the `loop()` function.
 
@@ -107,7 +103,8 @@ You can unset a handler, too:
 myButton.onPressed = 0;
 ```
 
-The event sources provided with Eventuino have the following callbacks:
+Eventuino provides several common event sources out of the box. Below are the
+provided event sources and their callback functions:
 
 | Event Source | Callback | Event Trigger |
 | ------------ | -------- | ------- |
@@ -150,6 +147,8 @@ for more details.
 
 
 # Extending Eventuino
+
+Create custom event sources!
 
 Say you have a thing that connects to a digital pin as an input. You could poll it
 from the `loop()` function, but if you want to take the event handler approach, you
