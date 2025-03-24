@@ -8,7 +8,6 @@ using namespace eventuino;
 
 Button button(BUTTON_PIN, BUTTON_VALUE); 
 Eventuino evt;
-EventSource* eventSources[] = { &button };
 
 void buttonPressed(uint8_t value) {
   Serial.print("Button pressed with value=");
@@ -23,7 +22,7 @@ void setup() {
   // the next poll
   button.onPressed=buttonPressed;
 
-  evt.setEventSources(eventSources, 1);
+  evt.addEventSource(&button);
   evt.begin();
 }
 

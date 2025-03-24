@@ -7,7 +7,6 @@ using namespace eventuino;
 
 IntervalTimer14Bit timer(TIMER_VALUE); 
 Eventuino evt;
-EventSource* eventSources[] = { &timer };
 
 void timerExpired(uint8_t value) {
   Serial.print("Timer expired at: ");
@@ -24,7 +23,7 @@ void setup() {
 
   timer.start(500);
 
-  evt.setEventSources(eventSources, 1);
+  evt.addEventSource(&timer);
   evt.begin();
 }
 

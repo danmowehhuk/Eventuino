@@ -26,6 +26,8 @@ using namespace eventuino;
 class Toggle: public DigitalPinSource {
 
   public:
+    // disable default constructor
+    Toggle() = delete;
 
     /*
      * Toggle constructor using Arduino-provided functions for
@@ -53,18 +55,21 @@ class Toggle: public DigitalPinSource {
 
     bool isActivated();
 
-  private:
-    // disable default constructor
-    Toggle();
+    // Allow moving
+    Toggle(Toggle&& other) noexcept;
+    Toggle& operator=(Toggle&& other) noexcept;
+    // Disable copying
+    Toggle(const Toggle&) = delete;
+    Toggle& operator=(const Toggle&) = delete;
 
-    // disable copy constructor since it would reference same pin
-    Toggle(Toggle &t);
+
+  private:
 
     // required by DigitalPinSource
     void onChange(uint8_t value, void* state = nullptr) override;
 
     // onLongHold is not supported by a Toggle, so enableRepeat is disabled
-    void enableRepeat(bool b);
+    void enableRepeat(bool b) = delete;
 
 };
 

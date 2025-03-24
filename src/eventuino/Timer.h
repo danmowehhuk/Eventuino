@@ -45,6 +45,9 @@ using namespace eventuino;
 template<class U, class T, uint8_t S> class Timer: public EventSource {
 
   public:
+    // disable default constructor
+    Timer() = delete;
+
     /*
      * value - The value passed to the event callback functions
      */
@@ -83,18 +86,36 @@ template<class U, class T, uint8_t S> class Timer: public EventSource {
      * Cancel the timer
      */
     void cancel() {
-      _state = 0;
+      _state = 0; // isActive now false
       setInterval(0, 0);
     };
 
     eventuinoCallback_t onExpire = 0;
 
+    // Disable copying
+    Timer(const Timer&) = delete;
+    Timer& operator=(const Timer&) = delete;
 
-  private:
-    // disable default and copy constructors
-    Timer();
-    Timer(Timer &t);
-
+    // Allow moving
+    Timer(Timer&& other) noexcept {
+      onExpire = other.onExpire;
+      _value = other._value;
+      _state = other._state;
+      other.onExpire = 0;
+      other._value = 0;
+      other._state = 0;
+    };
+    Timer& operator=(Timer&& other) noexcept {
+      if (this != &other) {
+        onExpire = other.onExpire;
+        _value = other._value;
+        _state = other._state;
+        other.onExpire = 0;
+        other._value = 0;
+        other._state = 0;
+      }
+      return *this;
+    }
 
   protected:
     uint8_t _value;
@@ -151,6 +172,12 @@ template<class U, class T, uint8_t S> class Timer: public EventSource {
       return (bitRead(_state, S - 2) == 1) ? true : false;
     };
 
+    // For derived class move constructors/operators
+    template<typename M>
+    M&& move(M& obj) {
+      return static_cast<M&&>(obj);
+    }
+
 };
 
 /*
@@ -166,14 +193,36 @@ template<class U, class T, uint8_t S> class Timer: public EventSource {
 template<class U, class T, uint8_t S> class IntervalTimer: public Timer<U, T, S> {
 
   public:
+    IntervalTimer() = delete;
+
     /*
      * value - The value passed to the event callback functions
      */
     IntervalTimer(uint8_t value): Timer<U, T, S>(value) {};
 
+    // Disable copying
+    IntervalTimer(const IntervalTimer&) = delete;
+    IntervalTimer& operator=(const IntervalTimer&) = delete;
+
+    // Allow moving
+    IntervalTimer(IntervalTimer&& other) noexcept: Timer<U, T, S>(move(other)) {
+      _interval = other._interval;
+      _prev = other._prev;
+      other._interval = 0;
+      other._prev = 0;
+    };
+    IntervalTimer& operator=(IntervalTimer&& other) noexcept {
+      if (this != &other) {
+        Timer<U, T, S>::operator=(move(other));
+        _interval = other._interval;
+        _prev = other._prev;
+        other._interval = 0;
+        other._prev = 0;
+      }
+      return *this;
+    };
+
   private:
-    IntervalTimer();
-    IntervalTimer(IntervalTimer &t);
     U _interval;
     uint32_t _prev;
 

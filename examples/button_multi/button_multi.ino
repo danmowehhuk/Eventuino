@@ -12,7 +12,6 @@ using namespace eventuino;
 Button button1(BUTTON1_PIN, BUTTON1_VALUE); 
 Button button2(BUTTON2_PIN, BUTTON2_VALUE); 
 Eventuino evt;
-EventSource* eventSources[] = { &button1, &button2 };
 
 void buttonPressed(uint8_t value) {
   Serial.print("Button pressed with value=");
@@ -44,7 +43,8 @@ void setup() {
   button2.onLongPress=buttonPressed;
   button2.enableRepeat(true);
 
-  evt.setEventSources(eventSources, 2);
+  evt.addEventSource(&button1);
+  evt.addEventSource(&button2);
   evt.begin();
 }
 

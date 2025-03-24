@@ -29,8 +29,8 @@ namespace eventuino {
       Eventuino(const Eventuino&) = delete;
       Eventuino& operator=(const Eventuino&) = delete;
 
-      EventSource* *_eventSources;
-      uint8_t _eventSourceCount;
+      EventSource* *_eventSources = nullptr;
+      uint8_t _eventSourceCount = 0;
 
       friend class EventuinoTestHelper;
 

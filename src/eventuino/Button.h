@@ -28,6 +28,8 @@ using namespace eventuino;
 class Button: public DigitalPinSource {
 
   public:
+    // disable default constructor
+    Button() = delete;
 
     /*
      * Button constructor using Arduino-provided functions for
@@ -56,12 +58,14 @@ class Button: public DigitalPinSource {
     bool isPressed();
     bool isLongPressed();
 
-  private:
-    // disable default constructor
-    Button();
+    // Allow moving
+    Button(Button&& other) noexcept;
+    Button& operator=(Button&& other) noexcept;
+    // Disable copying
+    Button(const Button&) = delete;
+    Button& operator=(const Button&) = delete;
 
-    // disable copy constructor since it would reference same pin
-    Button(Button &t);
+  private:
 
     // required by DigitalPinSource
     void onChange(uint8_t value, void* state = nullptr) override;

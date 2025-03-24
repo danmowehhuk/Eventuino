@@ -116,6 +116,12 @@ namespace eventuino {
       // possibly repeated if repeat is enabled
       virtual void onLongHold(uint8_t value, void* state = nullptr) {};
 
+      // For derived class move constructors/operators
+      template<typename T>
+      T&& move(T& obj) {
+        return static_cast<T&&>(obj);
+      }
+
     private:
       DigitalPinSource() = delete;
 

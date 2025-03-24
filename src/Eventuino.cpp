@@ -13,12 +13,14 @@
 #include "Eventuino.h" 
 #include "EventSource.h"
 #include <stdint.h>
+#include <Arduino.h>
 
 using namespace eventuino;
 
 __attribute__((deprecated("Use addEventSource(...) instead")))
 void Eventuino::setEventSources(EventSource* *srcs, uint8_t n) {
   if (_eventSources) delete[] _eventSources;
+  _eventSources = nullptr;
   _eventSources = srcs;
   _eventSourceCount = n;
 }
@@ -47,6 +49,8 @@ void Eventuino::poll(void* state = nullptr) {
     EventSource* es = _eventSources[i];
     if (es) {
       es->poll(state);
+    } else {
+      Serial.println("ES is nullptr");
     }
   }
 }

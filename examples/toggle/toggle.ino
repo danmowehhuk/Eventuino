@@ -8,7 +8,6 @@ using namespace eventuino;
 
 Toggle toggle(TOGGLE_PIN, TOGGLE_VALUE); 
 Eventuino evt;
-EventSource* eventSources[] = { &toggle };
 
 void toggleFlipped(uint8_t value) {
   Serial.print("Toggle flipped with value=");
@@ -35,7 +34,7 @@ void setup() {
   toggle.onActivate=toggleActivated;
   toggle.onDeactivate=toggleDeactivated;
 
-  evt.setEventSources(eventSources, 1);
+  evt.addEventSource(&toggle);
   evt.begin();
 }
 

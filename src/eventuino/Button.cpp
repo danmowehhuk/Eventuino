@@ -29,3 +29,25 @@ void Button::clearCallbacks() {
   onReleased = 0;
   onLongPress = 0;
 }
+
+Button::Button(Button&& other) noexcept: DigitalPinSource(move(other)) {
+  onPressed = other.onPressed;
+  onReleased = other.onReleased;
+  onLongPress = other.onLongPress;
+  other.onPressed = 0;
+  other.onReleased = 0;
+  other.onLongPress = 0;
+}
+
+Button& Button::operator=(Button&& other) noexcept {
+  if (this != &other) {
+    DigitalPinSource::operator=(move(other));
+    onPressed = other.onPressed;
+    onReleased = other.onReleased;
+    onLongPress = other.onLongPress;
+    other.onPressed = 0;
+    other.onReleased = 0;
+    other.onLongPress = 0;
+  }
+  return *this;
+}
