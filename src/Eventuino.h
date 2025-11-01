@@ -36,6 +36,11 @@ namespace eventuino {
 
     public:
       Eventuino() {};
+      ~Eventuino() {
+        if (_eventSources) delete[] _eventSources;
+        _eventSources = nullptr;
+        _eventSourceCount = 0;
+      };
 
      __attribute__((deprecated("Use addEventSource(...) instead")))
       void setEventSources(EventSource* *eventSources, uint8_t eventSourceCount);
