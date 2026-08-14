@@ -3,3 +3,4 @@ build/
 *.sublime-*
 .claudework/*
 !.claudework/.gitkeep
+.claude/worktrees/
