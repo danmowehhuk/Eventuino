@@ -7,13 +7,10 @@
   NO_ARDUINO isn't defined), delegates directly to the Arduino core.
 
   Off Arduino (NO_ARDUINO + HAL_xxx), every function below is declared
-  but not yet defined - this is Phase 1 of the arduino-insert-hal
-  migration (see .claudework/arduino-dependency-report.md), which only
-  extracts the interface and verifies the Arduino branch is unchanged.
-  Phase 2 fills these in against BareMetalHAL, which doesn't have GPIO
-  or Timing categories yet (Serial already does, but stays a bare
-  declaration here too for a clean, uniform phase boundary rather than
-  special-casing the one category that happens to already exist).
+  but not yet defined, pending BareMetalHAL support: it doesn't have
+  GPIO or Timing categories yet, and Serial - which it already covers -
+  stays a bare declaration here too, for a uniform interface rather than
+  special-casing the one category that happens to already exist.
 
   Copyright (c) 2024, Dan Mowehhuk (danmowehhuk@gmail.com)
   All rights reserved.
