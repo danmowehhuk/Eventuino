@@ -2,15 +2,9 @@
 
   hal/EventuinoHal.h
 
-  Thin facade over the GPIO, Timing, and Serial primitives Eventuino's
-  core (src/) needs. On Arduino (the unconditional default when
-  NO_ARDUINO isn't defined), delegates directly to the Arduino core.
-
-  Off Arduino (NO_ARDUINO + HAL_xxx), every function below is declared
-  but not yet defined, pending BareMetalHAL support: it doesn't have
-  GPIO or Timing categories yet, and Serial - which it already covers -
-  stays a bare declaration here too, for a uniform interface rather than
-  special-casing the one category that happens to already exist.
+  This namespace consolidates the GPIO, Timing, and Serial calls
+  Eventuino's core (src/) needs so they can be redirected to
+  BareMetalHAL when building with -DNO_ARDUINO.
 
   Copyright (c) 2024, Dan Mowehhuk (danmowehhuk@gmail.com)
   All rights reserved.
