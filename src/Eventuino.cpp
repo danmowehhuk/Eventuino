@@ -10,10 +10,10 @@
 
 */
 
-#include "Eventuino.h" 
+#include "Eventuino.h"
 #include "EventSource.h"
+#include "hal/EventuinoHal.h"
 #include <stdint.h>
-#include <Arduino.h>
 
 using namespace eventuino;
 
@@ -50,7 +50,7 @@ void Eventuino::poll(void* state = nullptr) {
     if (es) {
       es->poll(state);
     } else {
-      Serial.println("ES is nullptr");
+      EventuinoHal::println("ES is nullptr");
     }
   }
 }

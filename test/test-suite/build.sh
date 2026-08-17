@@ -17,6 +17,7 @@ while getopts "s" opt; do
 done
 
 COMPILE_CMD="arduino-cli compile -e -b arduino:avr:mega \
+  --library ../.. \
   --libraries ~/Arduino/libraries \
   --build-property build.extra_flags=\"-DDEBUG\""
 

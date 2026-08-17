@@ -28,8 +28,9 @@
 #ifndef eventuino_Timer_h
 #define eventuino_Timer_h
 
-#include <Arduino.h>
 #include "EventSource.h"
+#include "../hal/EventuinoHal.h"
+#include "../hal/bits.h"
 
 using namespace eventuino;
 
@@ -76,7 +77,7 @@ template<class U, class T, uint8_t S> class Timer: public EventSource {
      */
     void start(U duration) {
       if (onExpire == 0) return;
-      uint32_t startTime = millis();
+      uint32_t startTime = EventuinoHal::millis();
       setInterval(startTime, duration);
       updateExpiration(startTime, duration);
       setActive(true);
@@ -138,7 +139,7 @@ template<class U, class T, uint8_t S> class Timer: public EventSource {
     bool isExpired() {
       bool expired = false;
       U mask = ~((U)3 << (S - 2));
-      uint32_t now = millis();
+      uint32_t now = EventuinoHal::millis();
       U t = now & mask;
       U expires = _state & mask;
 

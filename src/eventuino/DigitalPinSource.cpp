@@ -1,5 +1,6 @@
-#include <Arduino.h>
 #include "DigitalPinSource.h"
+#include "../hal/EventuinoHal.h"
+#include "../hal/bits.h"
 
 using namespace eventuino;
 
@@ -9,11 +10,11 @@ uint8_t DigitalPinSource::_repeatMs = 200;
 uint8_t DigitalPinSource::_debounceDelayMs = 75;
 
 void _eventuinoPinSetupDefault(uint8_t pinNumber) {
-  pinMode(pinNumber, INPUT_PULLUP);
+  EventuinoHal::pinModeInputPullup(pinNumber);
 }
 
 uint8_t _eventuinoDigitalReadDefault(uint8_t pinNumber) {
-  return digitalRead(pinNumber);
+  return EventuinoHal::digitalReadPin(pinNumber);
 }
 
 DigitalPinSource::DigitalPinSource(uint8_t pinNumber, uint8_t value):
@@ -28,7 +29,7 @@ DigitalPinSource::DigitalPinSource(uint8_t pinNumber, uint8_t value,
     _doDigitalRead(readCallback) {};
 
 void DigitalPinSource::poll(void* state = nullptr) {
-  uint16_t now = millis(); // trunc to last 16-bits (32s)
+  uint16_t now = EventuinoHal::millis(); // trunc to last 16-bits (32s)
   uint8_t reading = _doDigitalRead(_pinNumber);
 
   if (reading != prevState()) {
@@ -46,7 +47,7 @@ void DigitalPinSource::poll(void* state = nullptr) {
     if (reading != prevState) {
       // State has changed
 
-      if (reading == LOW && prevState == HIGH) {
+      if (reading == EventuinoHal::LOW_STATE && prevState == EventuinoHal::HIGH_STATE) {
         // State changed from inactive to active
         _lastRepeat = now;
         setIsActive(true);
@@ -62,8 +63,8 @@ void DigitalPinSource::poll(void* state = nullptr) {
     } else {
       // State is unchanged, check for long hold
 
-      if (reading == LOW &&
-          (now - _toggleTime > _longHoldDelayMs) && 
+      if (reading == EventuinoHal::LOW_STATE &&
+          (now - _toggleTime > _longHoldDelayMs) &&
           (now - _lastRepeat > _repeatMs)) {
         // Pin has been active long enough for long hold
         // Possibly also a repeat long hold if repeat enabled
