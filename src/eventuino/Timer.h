@@ -206,7 +206,7 @@ template<class U, class T, uint8_t S> class IntervalTimer: public Timer<U, T, S>
     IntervalTimer& operator=(const IntervalTimer&) = delete;
 
     // Allow moving
-    IntervalTimer(IntervalTimer&& other) noexcept: Timer<U, T, S>(move(other)) {
+    IntervalTimer(IntervalTimer&& other) noexcept: Timer<U, T, S>(this->move(other)) {
       _interval = other._interval;
       _prev = other._prev;
       other._interval = 0;
@@ -214,7 +214,7 @@ template<class U, class T, uint8_t S> class IntervalTimer: public Timer<U, T, S>
     };
     IntervalTimer& operator=(IntervalTimer&& other) noexcept {
       if (this != &other) {
-        Timer<U, T, S>::operator=(move(other));
+        Timer<U, T, S>::operator=(this->move(other));
         _interval = other._interval;
         _prev = other._prev;
         other._interval = 0;
@@ -233,9 +233,9 @@ template<class U, class T, uint8_t S> class IntervalTimer: public Timer<U, T, S>
     };
 
     void reset() {
-      updateExpiration(_prev, _interval);
+      this->updateExpiration(_prev, _interval);
       _prev += _interval;
-      setActive(true);
+      this->setActive(true);
     };
 
 }; 
