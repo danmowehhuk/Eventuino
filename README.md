@@ -146,6 +146,55 @@ See the [callback example](examples/button_with_callbacks/button_with_callbacks.
 for more details.
 
 
+## Building for Bare-Metal AVR (No Arduino)
+
+Everything above assumes you're building through `arduino-cli`/the Arduino
+IDE. Eventuino also builds outside Arduino entirely, targeting AVR chips
+directly with `avr-g++` - useful if your project doesn't use the Arduino
+core at all (a bare-metal `main()`, a different build system, etc.).
+
+This build is selected with two flags passed together:
+`-DNO_ARDUINO -DHAL_AVR`. It requires
+[BareMetalHAL](https://github.com/danmowehhuk/BareMetalHAL) - a sibling
+Arduino library providing the GPIO, UART, timing and dynamic-memory
+primitives that Arduino normally supplies. BareMetalHAL isn't fetched
+through the Library Manager; it needs to be checked out alongside
+Eventuino (e.g. as a sibling under `~/Arduino/libraries/`) and its `src/`
+directory added to your build's include path.
+
+**Nothing self-initializes on this build.** On Arduino, `Serial.begin()`
+and millisecond timing are already running by the time your `setup()`
+runs. Bare-metal has no such magic - your own `main()` must call
+`BareMetalHAL::Uart0::begin(baud)` and `BareMetalHAL::timingInit()`
+before touching Eventuino at all (`evt.begin()` doesn't do this for you).
+
+**The callback signature is different on this build.** The ["Handling
+Events"](#handling-events) section above documents callbacks as taking a
+single `uint8_t value` parameter, and that's accurate for Arduino - but
+it only compiles there because `arduino-cli` bakes in `-fpermissive`,
+which quietly tolerates a function pointer with a shorter parameter list
+than expected. Bare `avr-g++` has no such leniency, so on
+`-DNO_ARDUINO -DHAL_AVR` every callback needs the full two-argument
+signature:
+
+```c
+void myHandler(uint8_t value, void* state) { // Do something... }
+```
+
+Assigning it works exactly the same as before (`myButton.onPressed =
+myHandler;`). If you don't need the `state` parameter, just ignore it -
+see the worked example below for the idiom.
+
+See [examples/button_basic_avr/](examples/button_basic_avr/) for a
+complete bare-metal sketch, and
+[test/test-suite-avr/](test/test-suite-avr/) for the bare-metal port of
+Eventuino's own test suite. Both build with their own `build.sh`, which
+looks for BareMetalHAL (and, for the test suite, `TestTool`) as sibling
+libraries under `~/Arduino/libraries/` by default - set the
+`BAREMETALHAL_SRC` and/or `TESTTOOL_SRC` environment variables to point
+at their `src/` directories if yours live somewhere else.
+
+
 # Extending Eventuino
 
 Create custom event sources!

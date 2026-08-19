@@ -13,10 +13,12 @@ uint8_t EventuinoTestHelper::digitalReadValue = EventuinoHal::HIGH_STATE; // ina
 bool EventuinoTestHelper::didPinSetup = false;
 
 void EventuinoTestHelper::helperPinSetup(uint8_t pinNumber) {
+  (void)pinNumber;
   didPinSetup = true;
 }
 
 uint8_t EventuinoTestHelper::helperDigitalRead(uint8_t pinNumber) {
+  (void)pinNumber;
   return digitalReadValue;
 }
 
