@@ -5,8 +5,17 @@
 #   ./build.sh -s     Build a .hex suitable for SimulIDE simulation
 #
 # Links across three libraries: Eventuino, TestTool, and BareMetalHAL.
-# Mirrors examples/button_basic_avr/build.sh's shape, plus TestTool's
-# TestInvocation.cpp (mirroring TestTool's own basic-avr/build.sh).
+#
+# Source discovery and linking mirror how arduino-cli itself builds a
+# library: every source file under a library's src/ is compiled
+# (recursively - see the "src and recursive file inclusion" rule in
+# https://arduino.github.io/arduino-cli/latest/library-specification/),
+# the resulting objects are archived into a static library, and the
+# linker pulls in only the objects an entry point actually references.
+# Hand-listing source files would silently drop any new file a library
+# adds later; skipping the archive step and passing every object
+# straight to the linker would link all of it in unconditionally,
+# growing the .hex with code the sketch never calls.
 
 set -euo pipefail
 
@@ -50,13 +59,19 @@ find_avr_tool() {
 }
 
 AVRGXX="$(find_avr_tool avr-g++)"
+AVRAR="$(find_avr_tool avr-ar)"
 AVROBJCOPY="$(find_avr_tool avr-objcopy)"
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BUILD_DIR="$DIR/build"
+OBJ_DIR="$BUILD_DIR/obj"
 
 BAREMETALHAL_SRC="${BAREMETALHAL_SRC:-$HOME/Arduino/libraries/BareMetalHAL/src}"
 if [ ! -f "$BAREMETALHAL_SRC/BareMetalHAL.h" ]; then
   echo "ERROR: BareMetalHAL.h not found under $BAREMETALHAL_SRC - set BAREMETALHAL_SRC to its src/ directory" >&2
+  exit 1
+fi
+if [ ! -d "$BAREMETALHAL_SRC/avr" ]; then
+  echo "ERROR: $BAREMETALHAL_SRC/avr not found - this build targets the avr HAL implementation" >&2
   exit 1
 fi
 
@@ -66,23 +81,47 @@ if [ ! -f "$TESTTOOL_SRC/TestTool.h" ]; then
   exit 1
 fi
 
-mkdir -p "$BUILD_DIR"
+CFLAGS=(-std=gnu++11 -Wall -Wextra -Os -DNO_ARDUINO -DHAL_AVR -DF_CPU=16000000UL -mmcu=atmega2560 -I "$DIR/../../src" -I "$BAREMETALHAL_SRC" -I "$TESTTOOL_SRC")
 
-"$AVRGXX" -std=gnu++11 -Wall -Wextra -Os -DNO_ARDUINO -DHAL_AVR -DF_CPU=16000000UL -mmcu=atmega2560 \
-  -I "$DIR/../../src" \
-  -I "$BAREMETALHAL_SRC" \
-  -I "$TESTTOOL_SRC" \
+mkdir -p "$OBJ_DIR"
+
+# build_archive <name> <src-root>
+#
+# Compiles every *.cpp found (recursively) under <src-root> and archives
+# the resulting objects into $BUILD_DIR/lib<name>.a. Prints the archive
+# path.
+build_archive() {
+  local name="$1"
+  local src_root="$2"
+  local objdir="$OBJ_DIR/$name"
+  mkdir -p "$objdir"
+
+  local objs=()
+  local src rel obj
+  while IFS= read -r -d '' src; do
+    rel="${src#"$src_root"/}"
+    obj="$objdir/${rel//\//_}.o"
+    "$AVRGXX" "${CFLAGS[@]}" -c "$src" -o "$obj"
+    objs+=("$obj")
+  done < <(find "$src_root" -name '*.cpp' -print0 | sort -z)
+
+  local archive="$BUILD_DIR/lib${name}.a"
+  rm -f "$archive"
+  "$AVRAR" rcs "$archive" "${objs[@]}"
+  echo "$archive"
+}
+
+build_archive eventuino "$DIR/../../src" >/dev/null
+# Scoped to avr/ specifically (not all of BareMetalHAL's src/) - a future
+# platform folder (e.g. src/esp32/) wouldn't compile under avr-g++.
+build_archive baremetalhal "$BAREMETALHAL_SRC/avr" >/dev/null
+build_archive testtool "$TESTTOOL_SRC" >/dev/null
+
+"$AVRGXX" "${CFLAGS[@]}" \
   "$DIR/test-suite-avr.cpp" \
   "$DIR/EventuinoTestHelper_avr.cpp" \
-  "$DIR/../../src/Eventuino.cpp" \
-  "$DIR/../../src/eventuino/DigitalPinSource.cpp" \
-  "$DIR/../../src/eventuino/Button.cpp" \
-  "$DIR/../../src/eventuino/Toggle.cpp" \
-  "$DIR/../../src/hal/EventuinoHal.cpp" \
-  "$TESTTOOL_SRC/TestInvocation.cpp" \
-  "$BAREMETALHAL_SRC/avr/TimingHAL.cpp" \
-  "$BAREMETALHAL_SRC/avr/MemoryHAL.cpp" \
-  -o "$BUILD_DIR/test-suite-avr.elf"
+  -o "$BUILD_DIR/test-suite-avr.elf" \
+  -L "$BUILD_DIR" -leventuino -ltesttool -lbaremetalhal
 
 "$AVROBJCOPY" -O ihex -R .eeprom "$BUILD_DIR/test-suite-avr.elf" "$BUILD_DIR/test-suite-avr.hex"
 

@@ -1,8 +1,8 @@
 // Bare-metal AVR port of ../button_basic/button_basic.ino - proves
 // Eventuino's NO_ARDUINO branch actually links and runs against
 // BareMetalHAL's GPIO, Timing, and Dynamic Memory categories together,
-// not just individually. See .claudework/plans/2026-08-18-migrate-mode-phase2.md
-// for the full rationale.
+// not just individually. See the "Building without Arduino" section of
+// the top-level README for the full rationale.
 //
 // Button wiring: PL7, pulled up internally (BareMetalHAL::INPUT_PULLUP),
 // grounded when pressed - change the port/bit below to match your wiring.

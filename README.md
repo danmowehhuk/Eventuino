@@ -146,27 +146,20 @@ See the [callback example](examples/button_with_callbacks/button_with_callbacks.
 for more details.
 
 
-## Building for Bare-Metal AVR (No Arduino)
+## Building without Arduino
 
 Everything above assumes you're building through `arduino-cli`/the Arduino
-IDE. Eventuino also builds outside Arduino entirely, targeting AVR chips
-directly with `avr-g++` - useful if your project doesn't use the Arduino
-core at all (a bare-metal `main()`, a different build system, etc.).
+IDE. Eventuino also builds outside Arduino entirely - useful if your
+project doesn't use the Arduino core at all (a bare-metal `main()`, a
+different build system, etc.). AVR is the platform this works on today;
+`examples/button_basic_avr/` and `test/test-suite-avr/` below are worked
+examples for it, not the only non-Arduino target this is meant to support.
 
-This build is selected with two flags passed together:
-`-DNO_ARDUINO -DHAL_AVR`. It requires
+For AVR specifically, this build is selected with two flags passed
+together: `-DNO_ARDUINO -DHAL_AVR`. It requires
 [BareMetalHAL](https://github.com/danmowehhuk/BareMetalHAL) - a sibling
-Arduino library providing the GPIO, UART, timing and dynamic-memory
-primitives that Arduino normally supplies. BareMetalHAL isn't fetched
-through the Library Manager; it needs to be checked out alongside
-Eventuino (e.g. as a sibling under `~/Arduino/libraries/`) and its `src/`
-directory added to your build's include path.
-
-**Nothing self-initializes on this build.** On Arduino, `Serial.begin()`
-and millisecond timing are already running by the time your `setup()`
-runs. Bare-metal has no such magic - your own `main()` must call
-`BareMetalHAL::Uart0::begin(baud)` and `BareMetalHAL::timingInit()`
-before touching Eventuino at all (`evt.begin()` doesn't do this for you).
+library providing the GPIO, UART, timing and dynamic-memory primitives
+that Arduino normally supplies.
 
 **The callback signature is different on this build.** The ["Handling
 Events"](#handling-events) section above documents callbacks as taking a
