@@ -4,10 +4,10 @@
 #   ./build.sh        Build a .hex suitable for flashing to real hardware
 #   ./build.sh -s     Build a .hex suitable for SimulIDE simulation
 #
-# Proves Eventuino's whole NO_ARDUINO chain links against BareMetalHAL's
-# GPIO, Timing, and Dynamic Memory categories together - the real shape
-# a bare-metal Eventuino consumer's build needs, not a simplified
-# stand-in.
+# Demonstrates Eventuino's whole NO_ARDUINO chain linking against
+# BareMetalHAL's GPIO, Timing, and Dynamic Memory categories together -
+# the real shape a bare-metal Eventuino consumer's build needs, not a
+# simplified stand-in.
 #
 # Source discovery and linking mirror how arduino-cli itself builds a
 # library: every source file under a library's src/ is compiled

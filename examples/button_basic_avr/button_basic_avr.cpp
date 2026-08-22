@@ -1,8 +1,8 @@
-// Bare-metal AVR port of ../button_basic/button_basic.ino - proves
-// Eventuino's NO_ARDUINO branch actually links and runs against
-// BareMetalHAL's GPIO, Timing, and Dynamic Memory categories together,
-// not just individually. See the "Building without Arduino" section of
-// the top-level README for the full rationale.
+// Bare-metal AVR port of ../button_basic/button_basic.ino - demonstrates
+// Eventuino's NO_ARDUINO branch linking and running against BareMetalHAL's
+// GPIO, Timing, and Dynamic Memory categories together, not just
+// individually. See the "Building without Arduino" section of the
+// top-level README for the full rationale.
 //
 // Button wiring: PL7, pulled up internally (BareMetalHAL::INPUT_PULLUP),
 // grounded when pressed - change the port/bit below to match your wiring.
@@ -24,8 +24,7 @@ using namespace BareMetalHAL;
 Button button(pin(Port::L, 7), 1);
 Eventuino evt;
 
-void buttonPressed(uint8_t value, void* state) {
-  (void)state;
+void buttonPressed(uint8_t value, void*) {
   Uart0::print("Button pressed with value=");
   Uart0::println((int)value);
 }

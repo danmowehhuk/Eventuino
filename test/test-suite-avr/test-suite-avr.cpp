@@ -1,6 +1,6 @@
-// Bare-metal AVR port of ../test-suite/test-suite.ino - proves
-// Eventuino's whole NO_ARDUINO chain behaves correctly under real
-// (simulated) hardware, not just that it links. Uses
+// Bare-metal AVR port of ../test-suite/test-suite.ino - demonstrates
+// Eventuino's whole NO_ARDUINO chain behaving correctly under real
+// (simulated) hardware, not just linking. Uses
 // EventuinoTestHelper (unmodified header, this directory's
 // EventuinoTestHelper_avr.cpp implementation) exactly like the
 // Arduino-branch suite does.
