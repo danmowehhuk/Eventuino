@@ -35,6 +35,7 @@ const uint8_t LOW_STATE = LOW;
 inline void pinModeInputPullup(uint8_t pin) { pinMode(pin, INPUT_PULLUP); }
 inline uint8_t digitalReadPin(uint8_t pin) { return digitalRead(pin); }
 inline unsigned long millis() { return ::millis(); }
+inline void delay(unsigned long ms) { ::delay(ms); }
 inline void println(const char* message) { Serial.println(message); }
 
 #else
@@ -45,6 +46,7 @@ extern const uint8_t LOW_STATE;
 void pinModeInputPullup(uint8_t pin);
 uint8_t digitalReadPin(uint8_t pin);
 unsigned long millis();
+void delay(unsigned long ms);
 void println(const char* message);
 
 #endif

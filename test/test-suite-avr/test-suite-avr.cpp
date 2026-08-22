@@ -5,7 +5,6 @@
 // EventuinoTestHelper_avr.cpp implementation) exactly like the
 // Arduino-branch suite does.
 
-#include <util/delay.h>
 #include <BareMetalHAL.h>
 #include <Eventuino.h>
 #include <TestTool.h>
@@ -95,16 +94,16 @@ void testButtonLongPress(TestInvocation* t) {
   t->verify(!btn.isLongPressed(), F("Should not be long pressed yet"));
   t->verify(longPressCapture.callCount == 1, F("onPressed should have been called once"));
   t->verify(longPressCapture.value == 3, F("Expected value = 3"));
-  _delay_ms(50); // long press delay
+  EventuinoHal::delay(50); // long press delay
   helper.doPoll(&btn, &longPressCapture);
   t->verify(btn.isLongPressed(), F("Should be long pressed"));
   t->verify(longPressCapture.callCount == 2, F("2 calls expected"));
   t->verify(longPressCapture.value == 3, F("Expected value = 3"));
-  _delay_ms(12); // repeat delay
+  EventuinoHal::delay(12); // repeat delay
   helper.doPoll(&btn, &longPressCapture);
   t->verify(btn.isLongPressed(), F("Should still be long pressed"));
   t->verify(longPressCapture.callCount == 3, F("3 calls expected"));
-  _delay_ms(12); // repeat delay
+  EventuinoHal::delay(12); // repeat delay
   helper.doPoll(&btn, &longPressCapture);
   t->verify(longPressCapture.callCount == 4, F("4 calls expected"));
 }
@@ -149,18 +148,18 @@ void testTimer(TestInvocation* t) {
   tmr.start(20);
   helper.doPoll(&tmr, &capture);
   t->verify(capture.callCount == 0, F("onExpired should not have been called yet (1)"));
-  _delay_ms(22);
+  EventuinoHal::delay(22);
   helper.doPoll(&tmr, &capture);
   t->verify(capture.value == 9, F("Expected value = 9"));
   t->verify(capture.callCount == 1, F("onExpired should have been called once"));
-  _delay_ms(22);
+  EventuinoHal::delay(22);
   helper.doPoll(&tmr, &capture);
   t->verify(capture.callCount == 1, F("onExpired called by expired timer"));
   tmr.start(20);
   helper.doPoll(&tmr, &capture);
   t->verify(capture.callCount == 1, F("onExpired should not have been called yet (2)"));
   tmr.cancel();
-  _delay_ms(22);
+  EventuinoHal::delay(22);
   helper.doPoll(&tmr, &capture);
   t->verify(capture.callCount == 1, F("onExpired called by cancelled timer"));
 }
@@ -179,18 +178,18 @@ void testIntervalTimer(TestInvocation* t) {
   tmr.start(20);
   helper.doPoll(&tmr, &capture);
   t->verify(capture.callCount == 0, F("onExpired should not have been called yet"));
-  _delay_ms(22);
+  EventuinoHal::delay(22);
   helper.doPoll(&tmr, &capture);
   t->verify(capture.value == 11, F("Expected value = 11"));
   t->verify(capture.callCount == 1, F("onExpired should have been called once"));
-  _delay_ms(22);
+  EventuinoHal::delay(22);
   helper.doPoll(&tmr, &capture);
   t->verify(capture.callCount == 2, F("onExpired should have been called 2x"));
-  _delay_ms(22);
+  EventuinoHal::delay(22);
   helper.doPoll(&tmr, &capture);
   t->verify(capture.callCount == 3, F("onExpired should have been called 3x"));
   tmr.cancel();
-  _delay_ms(22);
+  EventuinoHal::delay(22);
   helper.doPoll(&tmr, &capture);
   t->verify(capture.callCount == 3, F("onExpired called by cancelled timer"));
 }
