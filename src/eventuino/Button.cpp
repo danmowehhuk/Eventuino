@@ -2,7 +2,7 @@
 
 using namespace eventuino;
 
-void Button::onChange(uint8_t value, void* state = nullptr) {
+void Button::onChange(uint8_t value, void* state) {
   if (isActive() && onPressed != 0) {
     onPressed(value, state);
   } else if (!isActive() && onReleased != 0) {
@@ -10,7 +10,7 @@ void Button::onChange(uint8_t value, void* state = nullptr) {
   }
 }
 
-void Button::onLongHold(uint8_t value, void* state = nullptr) {
+void Button::onLongHold(uint8_t value, void* state) {
   if (onLongPress != 0) {
     onLongPress(value, state);
   }

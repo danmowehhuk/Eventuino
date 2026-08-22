@@ -36,11 +36,11 @@ namespace eventuino {
 
       /*
        * Event callback functions must use this signature, where the
-       * "value" is specified in the constructor of the sub-class 
-       * (Button, Toggle, etc) and may be used to identify which 
+       * "value" is specified in the constructor of the sub-class
+       * (Button, Toggle, etc) and may be used to identify which
        * button, toggle, etc., triggered the event.
        */
-      typedef void (*eventuinoCallback_t)(uint8_t value, void* state = nullptr);
+      typedef void (*eventuinoCallback_t)(uint8_t value, void* state);
 
   };
 

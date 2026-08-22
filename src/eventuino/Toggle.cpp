@@ -2,7 +2,7 @@
 
 using namespace eventuino;
 
-void Toggle::onChange(uint8_t value, void* state = nullptr) {
+void Toggle::onChange(uint8_t value, void* state) {
   if (isActive() && onActivate != 0) {
     onActivate(value, state);
   } else if (!isActive() && onDeactivate != 0) {

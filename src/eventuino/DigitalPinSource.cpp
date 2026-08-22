@@ -28,7 +28,7 @@ DigitalPinSource::DigitalPinSource(uint8_t pinNumber, uint8_t value,
     _doPinSetup(setupCallback),
     _doDigitalRead(readCallback) {};
 
-void DigitalPinSource::poll(void* state = nullptr) {
+void DigitalPinSource::poll(void* state) {
   uint16_t now = EventuinoHal::millis(); // trunc to last 16-bits (32s)
   uint8_t reading = _doDigitalRead(_pinNumber);
 

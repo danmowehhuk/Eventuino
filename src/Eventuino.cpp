@@ -44,7 +44,7 @@ void Eventuino::begin() {
   }	
 }
 
-void Eventuino::poll(void* state = nullptr) {
+void Eventuino::poll(void* state) {
   for (uint8_t i = 0; i < _eventSourceCount; i++) {
     EventSource* es = _eventSources[i];
     if (es) {
