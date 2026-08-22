@@ -20,6 +20,10 @@ unsigned long millis() {
   return BareMetalHAL::millis();
 }
 
+void delay(unsigned long ms) {
+  BareMetalHAL::delay(ms);
+}
+
 void println(const char* message) {
   BareMetalHAL::Uart0::println(message);
 }

@@ -5,7 +5,6 @@
 // class this implements.
 
 #include "../test-suite/EventuinoTestHelper.h"
-#include <util/delay.h>
 #include "../../src/hal/EventuinoHal.h"
 
 uint8_t EventuinoTestHelper::digitalReadValue = EventuinoHal::HIGH_STATE; // inactive
@@ -84,7 +83,7 @@ void EventuinoTestHelper::doBouncyActivate(DigitalPinSource* dps, void* state) {
   _evt.poll(state);
   digitalReadValue = EventuinoHal::LOW_STATE;
   _evt.poll(state);
-  _delay_ms(15);
+  EventuinoHal::delay(15);
   _evt.poll(state);
   clearEventSource();
 }
@@ -97,7 +96,7 @@ void EventuinoTestHelper::doBouncyDeactivate(DigitalPinSource* dps, void* state)
   _evt.poll(state);
   digitalReadValue = EventuinoHal::HIGH_STATE;
   _evt.poll(state);
-  _delay_ms(15);
+  EventuinoHal::delay(15);
   _evt.poll(state);
   clearEventSource();
 }
