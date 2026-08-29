@@ -3,7 +3,11 @@
 
 using namespace eventuino;
 
-#define TOGGLE_PIN 5
+#ifndef OVERRIDE_PINS
+  #ifndef TOGGLE_PIN
+  #define TOGGLE_PIN 5
+  #endif
+#endif
 #define TOGGLE_VALUE 1
 
 Toggle toggle(TOGGLE_PIN, TOGGLE_VALUE); 

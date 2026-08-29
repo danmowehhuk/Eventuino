@@ -3,7 +3,11 @@
 
 using namespace eventuino;
 
-#define BUTTON_PIN 5
+#ifndef OVERRIDE_PINS
+  #ifndef BUTTON_PIN
+  #define BUTTON_PIN 5
+  #endif
+#endif
 #define BUTTON_VALUE 1
 
 Button button(BUTTON_PIN, BUTTON_VALUE); 
