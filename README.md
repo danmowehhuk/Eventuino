@@ -41,7 +41,7 @@ using namespace eventuino;
 Button button(BUTTON_PIN, BUTTON_VALUE); 
 Eventuino evt;
 
-void buttonPressed(uint8_t value) {
+void buttonPressed(uint8_t value, void*) {
   Serial.print("Button pressed with value=");
   Serial.println(value);
 }
@@ -86,10 +86,11 @@ Setting a new callback function (or unsetting one) takes effect immediately.
 
 ### Handling Events
 
-Create a function (not a class method) that returns `void` and takes a 
-single `uint8_t` parameter. For example:
+Create a function (not a class method) that returns `void` and takes a
+`uint8_t` value and a `void*` state. Leave the state unnamed if you don't
+use it. For example:
 ```c
-void myHandler(uint8_t value) { // Do something... }
+void myHandler(uint8_t value, void*) { // Do something... }
 ```
 
 Assign your function to one of the available callbacks. For example, a button
@@ -160,23 +161,6 @@ together: `-DNO_ARDUINO -DHAL_AVR`. It requires
 [BareMetalHAL](https://github.com/danmowehhuk/BareMetalHAL) - a sibling
 library providing the GPIO, UART, timing and dynamic-memory primitives
 that Arduino normally supplies.
-
-**The callback signature is different on this build.** The ["Handling
-Events"](#handling-events) section above documents callbacks as taking a
-single `uint8_t value` parameter, and that's accurate for Arduino - but
-it only compiles there because `arduino-cli` bakes in `-fpermissive`,
-which quietly tolerates a function pointer with a shorter parameter list
-than expected. Bare `avr-g++` has no such leniency, so on
-`-DNO_ARDUINO -DHAL_AVR` every callback needs the full two-argument
-signature:
-
-```c
-void myHandler(uint8_t value, void* state) { // Do something... }
-```
-
-Assigning it works exactly the same as before (`myButton.onPressed =
-myHandler;`). If you don't need the `state` parameter, just ignore it -
-see the worked example below for the idiom.
 
 See [examples/button_basic_avr/](examples/button_basic_avr/) for a
 complete bare-metal sketch, and

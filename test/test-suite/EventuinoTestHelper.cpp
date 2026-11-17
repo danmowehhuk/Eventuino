@@ -5,11 +5,11 @@ uint8_t EventuinoTestHelper::digitalReadValue = HIGH; // inactive
 
 bool EventuinoTestHelper::didPinSetup = false;
 
-void EventuinoTestHelper::helperPinSetup(uint8_t pinNumber) {
+void EventuinoTestHelper::helperPinSetup(uint8_t /*pinNumber*/) {
   didPinSetup = true;
 }
     
-uint8_t EventuinoTestHelper::helperDigitalRead(uint8_t pinNumber) {
+uint8_t EventuinoTestHelper::helperDigitalRead(uint8_t /*pinNumber*/) {
   return digitalReadValue;
 }
 
@@ -64,13 +64,13 @@ void EventuinoTestHelper::doSetup(EventSource* es) {
   clearEventSource();
 }
 
-void EventuinoTestHelper::doPoll(EventSource* es, void* state = nullptr) {
+void EventuinoTestHelper::doPoll(EventSource* es, void* state) {
   setEventSource(es);
   _evt.poll(state);
   clearEventSource();
 }
 
-void EventuinoTestHelper::doBouncyActivate(DigitalPinSource* dps, void* state = nullptr) {
+void EventuinoTestHelper::doBouncyActivate(DigitalPinSource* dps, void* state) {
   setEventSource(dps);
   digitalReadValue = LOW;
   _evt.poll(state);
@@ -83,7 +83,7 @@ void EventuinoTestHelper::doBouncyActivate(DigitalPinSource* dps, void* state = 
   clearEventSource();
 }
 
-void EventuinoTestHelper::doBouncyDeactivate(DigitalPinSource* dps, void* state = nullptr) {
+void EventuinoTestHelper::doBouncyDeactivate(DigitalPinSource* dps, void* state) {
   setEventSource(dps);
   digitalReadValue = HIGH;
   _evt.poll(state);

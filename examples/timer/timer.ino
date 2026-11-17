@@ -8,7 +8,7 @@ using namespace eventuino;
 Timer14Bit timer(TIMER_VALUE); 
 Eventuino evt;
 
-void timerExpired(uint8_t value) {
+void timerExpired(uint8_t value, void*) {
   Serial.print("Timer expired with value=");
   Serial.println(value);
 }

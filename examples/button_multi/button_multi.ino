@@ -21,17 +21,17 @@ Button button1(BUTTON1_PIN, BUTTON1_VALUE);
 Button button2(BUTTON2_PIN, BUTTON2_VALUE); 
 Eventuino evt;
 
-void buttonPressed(uint8_t value) {
+void buttonPressed(uint8_t value, void*) {
   Serial.print("Button pressed with value=");
   Serial.println(value);
 }
 
-void buttonLongPressed(uint8_t value) {
+void buttonLongPressed(uint8_t value, void*) {
   Serial.print("Button long-pressed with value=");
   Serial.println(value);
 }
 
-void buttonReleased(uint8_t value) {
+void buttonReleased(uint8_t value, void*) {
   Serial.print("Button released with value=");
   Serial.println(value);
 }

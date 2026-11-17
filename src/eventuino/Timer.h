@@ -124,7 +124,7 @@ template<class U, class T, uint8_t S> class Timer: public EventSource {
     // bits: isActive | isOverflow | expirationTime (all remaining bits)
     U _state = 0;
 
-    virtual void setInterval(uint32_t startTime, U duration) {};
+    virtual void setInterval(uint32_t /*startTime*/, U /*duration*/) {};
     virtual void reset() { cancel(); };
 
     void updateExpiration(uint32_t startTime, U duration) {

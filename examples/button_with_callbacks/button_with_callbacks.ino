@@ -50,6 +50,7 @@ uint8_t readMyButton(uint8_t pinNumber) {
     // it's a port-expander, handle as described above.
     // ...
     // return myPortExpander.digitalRead(pinNumber & 16);
+    return LOW;
   } else {
     return digitalRead(pinNumber);
   }
@@ -58,7 +59,7 @@ uint8_t readMyButton(uint8_t pinNumber) {
 Button button(BUTTON_PIN, BUTTON_VALUE, setupMyButton, readMyButton); 
 Eventuino evt;
 
-void buttonPressed(uint8_t value) {
+void buttonPressed(uint8_t value, void*) {
   Serial.print("Button pressed with value=");
   Serial.println(value);
 }

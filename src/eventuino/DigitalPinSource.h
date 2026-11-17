@@ -114,7 +114,7 @@ namespace eventuino {
 
       // Called when the pin has been active for more than some delay, and
       // possibly repeated if repeat is enabled
-      virtual void onLongHold(uint8_t value, void* state = nullptr) {};
+      virtual void onLongHold(uint8_t /*value*/, void* /*state*/ = nullptr) {};
 
       // For derived class move constructors/operators
       template<typename T>

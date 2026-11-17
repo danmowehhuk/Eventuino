@@ -13,7 +13,7 @@ using namespace eventuino;
 Button button(BUTTON_PIN, BUTTON_VALUE); 
 Eventuino evt;
 
-void buttonPressed(uint8_t value) {
+void buttonPressed(uint8_t value, void*) {
   Serial.print("Button pressed with value=");
   Serial.println(value);
 }

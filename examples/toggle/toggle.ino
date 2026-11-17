@@ -13,16 +13,16 @@ using namespace eventuino;
 Toggle toggle(TOGGLE_PIN, TOGGLE_VALUE); 
 Eventuino evt;
 
-void toggleFlipped(uint8_t value) {
+void toggleFlipped(uint8_t value, void*) {
   Serial.print("Toggle flipped with value=");
   Serial.println(value);
 }
-void toggleActivated(uint8_t value) {
+void toggleActivated(uint8_t value, void*) {
   Serial.print("Toggle ");
   Serial.print(value);
   Serial.println(" has been activated");
 }
-void toggleDeactivated(uint8_t value) {
+void toggleDeactivated(uint8_t value, void*) {
   Serial.print("Toggle ");
   Serial.print(value);
   Serial.println(" has been deactivated");
