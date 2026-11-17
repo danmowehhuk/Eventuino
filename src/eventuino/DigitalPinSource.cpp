@@ -19,14 +19,14 @@ uint8_t _eventuinoDigitalReadDefault(uint8_t pinNumber) {
 
 DigitalPinSource::DigitalPinSource(uint8_t pinNumber, uint8_t value):
     EventSource(), _pinNumber(pinNumber), _value(value),
-    _doPinSetup(_eventuinoPinSetupDefault),
-    _doDigitalRead(_eventuinoDigitalReadDefault) {};
+    _doDigitalRead(_eventuinoDigitalReadDefault),
+    _doPinSetup(_eventuinoPinSetupDefault) {};
 
 DigitalPinSource::DigitalPinSource(uint8_t pinNumber, uint8_t value, 
       pinSetupCallback_t setupCallback, digitalReadCallback_t readCallback):
     EventSource(), _pinNumber(pinNumber), _value(value),
-    _doPinSetup(setupCallback),
-    _doDigitalRead(readCallback) {};
+    _doDigitalRead(readCallback),
+    _doPinSetup(setupCallback) {};
 
 void DigitalPinSource::poll(void* state) {
   uint16_t now = EventuinoHal::millis(); // trunc to last 16-bits (32s)
